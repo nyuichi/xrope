@@ -225,6 +225,7 @@ xr_fold(xrope *x, xr_chunk *c, size_t offset)
   x->left = x->right = NULL;
   x->chunk = c;
   x->offset = offset;
+  XR_CHUNK_INCREF(c);
 }
 
 static inline const char *
