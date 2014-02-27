@@ -1,4 +1,4 @@
-# xrope
+# xrope [![Build Status](https://travis-ci.org/wasabiz/xrope.png)](https://travis-ci.org/wasabiz/xrope)
 
 rope data structre
 
