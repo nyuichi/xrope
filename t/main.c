@@ -48,10 +48,10 @@ run()
   test(xr_at(x, 10) == text[10]);
   test(xr_at(x, 15) == text[15]);
 
-  test(strcmp(xr_str(x), text) == 0);
-  test(xr_str(x) == xr_str(x));       /* properly cached? */
+  test(strcmp(xr_cstr(x), text) == 0);
+  test(xr_cstr(x) == xr_cstr(x)); /* properly cached? */
 
-  test(strcmp(xr_str(xr_sub(x, 13, xr_len(x))), text + 13) == 0);
+  test(strcmp(xr_cstr(xr_sub(x, 13, xr_len(x))), text + 13) == 0);
 }
 
 int
