@@ -26,7 +26,7 @@ static inline size_t xr_len(xrope *);
 static inline char xr_at(xrope *, size_t);
 static inline xrope *xr_cat(xrope *, xrope *);
 static inline xrope *xr_sub(xrope *, size_t, size_t);
-static inline const char *xr_str(xrope *);
+static inline const char *xr_cstr(xrope *); /* returns NULL-terminated string */
 
 
 /* impl */
@@ -264,7 +264,7 @@ xr_fold(xrope *x, xr_chunk *c, size_t offset)
 }
 
 static inline const char *
-xr_str(xrope *x)
+xr_cstr(xrope *x)
 {
   xr_chunk *c;
 
