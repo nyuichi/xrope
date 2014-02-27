@@ -13,7 +13,9 @@ extern "C" {
 
 typedef struct xrope xrope;
 
-static inline xrope *xr_new(const char * /* static */);
+#define xr_new(cstr) xr_new_cstr(cstr, strlen(cstr))
+#define xr_new_lit(cstr) xr_new_cstr(cstr, sizeof(cstr) - 1)
+static inline xrope *xr_new_cstr(const char * /* static, NULL-terminated */, size_t);
 static inline xrope *xr_new_imbed(const char * /* static */, size_t);
 static inline xrope *xr_new_volatile(const char * /* auto */, size_t);
 
@@ -76,7 +78,7 @@ XROPE_DECREF(xrope *x) {
 }
 
 static inline xrope *
-xr_new(const char *str)
+xr_new_cstr(const char *str, size_t len)
 {
   xr_chunk *c;
   xrope *x;
@@ -84,7 +86,7 @@ xr_new(const char *str)
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
   c->refcnt = 1;
   c->str = (char *)str;
-  c->len = strlen(str);
+  c->len = len;
   c->autofree = 0;
   c->zeroterm = 1;
 
