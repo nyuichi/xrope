@@ -38,6 +38,9 @@ run()
   y = xr_cat(w, z);
   x = xr_cat(v, y);
   XROPE_DECREF(y);
+  XROPE_DECREF(z);
+  XROPE_DECREF(w);
+  XROPE_DECREF(v);
 
   test(xr_len(x) == strlen(text));
 
