@@ -130,7 +130,8 @@ xr_new_volatile(const char *str, size_t len)
   xr_chunk *c;
   xrope *x;
 
-  buf = (char *)malloc(len);
+  buf = (char *)malloc(len + 1);
+  buf[len] = '\0';
   memcpy(buf, str, len);
 
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
@@ -138,7 +139,7 @@ xr_new_volatile(const char *str, size_t len)
   c->str = buf;
   c->len = len;
   c->autofree = 1;
-  c->zeroterm = 0;
+  c->zeroterm = 1;
 
   x = (xrope *)malloc(sizeof(xrope));
   x->refcnt = 1;
