@@ -235,13 +235,14 @@ xr_str(xrope *x)
   xr_chunk *c;
 
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
-  c->refcnt = 0;                /* shortcut */
+  c->refcnt = 1;
   c->autofree = 1;
   c->str = (char *)malloc(x->weight + 1);
   c->str[x->weight] = '\0';
 
   xr_fold(x, c, 0);
 
+  XR_CHUNK_DECREF(c);
   return c->str;
 }
 
