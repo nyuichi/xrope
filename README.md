@@ -28,7 +28,7 @@ static inline const char *xr_str(xrope *);
 - self-balancing
 - unicode support?
 - custom allocator
-- test cases
+- more test cases
 
 ## Author
 
