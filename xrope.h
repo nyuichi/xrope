@@ -193,7 +193,7 @@ xr_cat(xrope *x, xrope *y)
   return z;
 }
 
-static struct xrope *
+static inline struct xrope *
 xr_sub(xrope *x, size_t i, size_t j)
 {
   if (x->weight < j) {          /* checked only once the first run */
