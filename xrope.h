@@ -64,6 +64,7 @@ XROPE_DECREF(xrope *x) {
   if (! --x->refcnt) {
     if (x->chunk) {
       XR_CHUNK_DECREF(x->chunk);
+      return;
     }
     XROPE_DECREF(x->left);
     XROPE_DECREF(x->right);
