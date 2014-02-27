@@ -8,7 +8,7 @@ Just include "xrope.h" anywhere you want to use xrope!
 
 # API
 
-```
+```c
 typedef struct xrope xrope;
 
 static inline void XROPE_INCREF(xrope *);
@@ -26,6 +26,7 @@ static inline const char *xr_str(xrope *);
 # TODO
 
 - self-balancing
+- unicode support?
 
 # Author
 
