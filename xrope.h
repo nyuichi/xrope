@@ -210,7 +210,7 @@ static inline void
 xr_fold(xrope *x, xr_chunk *c, size_t offset)
 {
   if (x->chunk) {
-    memcpy(c->str + offset, x->chunk->str, x->weight);
+    memcpy(c->str + offset, x->chunk->str + x->offset, x->weight);
     XR_CHUNK_DECREF(x->chunk);
 
     x->chunk = c;
