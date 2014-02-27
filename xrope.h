@@ -32,7 +32,8 @@ static inline const char *xr_str(xrope *);
 typedef struct {
   char *str;
   int refcnt;
-  char autofree;
+  size_t len;
+  char autofree, zeroterm;
 } xr_chunk;
 
 #define XR_CHUNK_INCREF(c) do {                 \
@@ -83,13 +84,15 @@ xr_new(const char *str)
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
   c->refcnt = 1;
   c->str = (char *)str;
+  c->len = strlen(str);
   c->autofree = 0;
+  c->zeroterm = 1;
 
   x = (xrope *)malloc(sizeof(xrope));
   x->refcnt = 1;
   x->left = NULL;
   x->right = NULL;
-  x->weight = strlen(str);
+  x->weight = c->len;
   x->offset = 0;
   x->chunk = c;
 
@@ -105,13 +108,15 @@ xr_new_imbed(const char *str, size_t len)
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
   c->refcnt = 1;
   c->str = (char *)str;
+  c->len = len;
   c->autofree = 0;
+  c->zeroterm = 0;
 
   x = (xrope *)malloc(sizeof(xrope));
   x->refcnt = 1;
   x->left = NULL;
   x->right = NULL;
-  x->weight = len;
+  x->weight = c->len;
   x->offset = 0;
   x->chunk = c;
 
@@ -131,13 +136,15 @@ xr_new_volatile(const char *str, size_t len)
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
   c->refcnt = 1;
   c->str = buf;
+  c->len = len;
   c->autofree = 1;
+  c->zeroterm = 0;
 
   x = (xrope *)malloc(sizeof(xrope));
   x->refcnt = 1;
   x->left = NULL;
   x->right = NULL;
-  x->weight = len;
+  x->weight = c->len;
   x->offset = 0;
   x->chunk = c;
 
@@ -258,11 +265,17 @@ xr_str(xrope *x)
 {
   xr_chunk *c;
 
+  if (x->chunk && x->offset == 0 && x->weight == x->chunk->len && x->chunk->zeroterm) {
+    return x->chunk->str;       /* reuse cached chunk */
+  }
+
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
   c->refcnt = 1;
+  c->len = x->weight;
   c->autofree = 1;
-  c->str = (char *)malloc(x->weight + 1);
-  c->str[x->weight] = '\0';
+  c->zeroterm = 1;
+  c->str = (char *)malloc(c->len + 1);
+  c->str[c->len] = '\0';
 
   xr_fold(x, c, 0);
 

@@ -49,6 +49,7 @@ run()
   test(xr_at(x, 15) == text[15]);
 
   test(strcmp(xr_str(x), text) == 0);
+  test(xr_str(x) == xr_str(x));       /* properly cached? */
 
   test(strcmp(xr_str(xr_sub(x, 13, xr_len(x))), text + 13) == 0);
 }
