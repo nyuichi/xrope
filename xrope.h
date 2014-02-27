@@ -16,7 +16,8 @@ typedef struct xrope xrope;
 static inline void XROPE_INCREF(xrope *);
 static inline void XROPE_DECREF(xrope *);
 
-static inline xrope *xr_new(const char * /* static */, size_t);
+static inline xrope *xr_new(const char * /* static */);
+static inline xrope *xr_new_imbed(const char * /* static */, size_t);
 static inline xrope *xr_new_volatile(const char * /* auto */, size_t);
 static inline size_t xr_len(xrope *);
 static inline char xr_at(xrope *, size_t);
@@ -73,7 +74,29 @@ XROPE_DECREF(xrope *x) {
 }
 
 static inline xrope *
-xr_new(const char *str, size_t len)
+xr_new(const char *str)
+{
+  xr_chunk *c;
+  xrope *x;
+
+  c = (xr_chunk *)malloc(sizeof(xr_chunk));
+  c->refcnt = 1;
+  c->str = (char *)str;
+  c->autofree = 0;
+
+  x = (xrope *)malloc(sizeof(xrope));
+  x->refcnt = 1;
+  x->left = NULL;
+  x->right = NULL;
+  x->weight = strlen(str);
+  x->offset = 0;
+  x->chunk = c;
+
+  return x;
+}
+
+static inline xrope *
+xr_new_imbed(const char *str, size_t len)
 {
   xr_chunk *c;
   xrope *x;

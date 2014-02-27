@@ -20,18 +20,18 @@ run()
   char text[] = "Hello my name is Yuichi";
   xrope *x, *y, *z, *w, *v;
 
-  x = xr_new(text + 15, 1);
-  y = xr_new(text + 16, 7);
+  x = xr_new_imbed(text + 15, 1);
+  y = xr_new_imbed(text + 16, 7);
   z = xr_cat(x, y);
   XROPE_DECREF(x);
   XROPE_DECREF(y);
-  x = xr_new(text + 9, 2);
-  y = xr_new(text + 11, 4);
+  x = xr_new_imbed(text + 9, 2);
+  y = xr_new_imbed(text + 11, 4);
   w = xr_cat(x, y);
   XROPE_DECREF(x);
   XROPE_DECREF(y);
-  x = xr_new(text, 6);
-  y = xr_new(text + 6, 3);
+  x = xr_new_imbed(text, 6);
+  y = xr_new_imbed(text + 6, 3);
   v = xr_cat(x, y);
   XROPE_DECREF(x);
   XROPE_DECREF(y);
