@@ -11,11 +11,15 @@ Just include "xrope.h" anywhere you want to use xrope!
 ```c
 typedef struct xrope xrope;
 
+#define xr_new(cstr) xr_new_cstr(cstr, strlen(cstr))
+#define xr_new_lit(cstr) xr_new_cstr(cstr, sizeof(cstr) - 1)
+static inline xrope *xr_new_cstr(const char * /* static, NULL-terminated */, size_t);
+static inline xrope *xr_new_imbed(const char * /* static */, size_t);
+static inline xrope *xr_new_volatile(const char * /* auto */, size_t);
+
 static inline void XROPE_INCREF(xrope *);
 static inline void XROPE_DECREF(xrope *);
 
-static inline xrope *xr_new(const char * /* static */, size_t);
-static inline xrope *xr_new_volatile(const char * /* auto */, size_t);
 static inline size_t xr_len(xrope *);
 static inline char xr_at(xrope *, size_t);
 static inline xrope *xr_cat(xrope *, xrope *);
