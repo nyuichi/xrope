@@ -2,11 +2,11 @@
 
 rope data structre
 
-# Usage
+## Usage
 
 Just include "xrope.h" anywhere you want to use xrope!
 
-# API
+## API
 
 ```c
 typedef struct xrope xrope;
@@ -23,11 +23,13 @@ static inline xrope *xr_sub(xrope *, size_t, size_t);
 static inline const char *xr_str(xrope *);
 ```
 
-# TODO
+## TODO
 
 - self-balancing
 - unicode support?
+- custom allocator
+- test cases
 
-# Author
+## Author
 
 Yuichi Nishiwaki (yuichi@idylls.jp)
