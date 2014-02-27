@@ -13,12 +13,13 @@ extern "C" {
 
 typedef struct xrope xrope;
 
-static inline void XROPE_INCREF(xrope *);
-static inline void XROPE_DECREF(xrope *);
-
 static inline xrope *xr_new(const char * /* static */);
 static inline xrope *xr_new_imbed(const char * /* static */, size_t);
 static inline xrope *xr_new_volatile(const char * /* auto */, size_t);
+
+static inline void XROPE_INCREF(xrope *);
+static inline void XROPE_DECREF(xrope *);
+
 static inline size_t xr_len(xrope *);
 static inline char xr_at(xrope *, size_t);
 static inline xrope *xr_cat(xrope *, xrope *);
