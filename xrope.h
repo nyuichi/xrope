@@ -13,11 +13,21 @@ extern "C" {
 
 typedef struct xrope xrope;
 
+/**
+ * | name         | frees buffer? | end with NULL? | complexity | misc
+ * | ----         | ----          | ----           | ----       | ---
+ * | xr_new_cstr  | no            | yes            | O(1)       | xr_new(_lit)
+ * | xr_new_imbed | no            | no             | O(1)       |
+ * | xr_new_move  | yes           | yes            | O(1)       |
+ * | xr_new_copy  | yes           | no             | O(n)       |
+ */
+
 #define xr_new(cstr) xr_new_cstr(cstr, strlen(cstr))
 #define xr_new_lit(cstr) xr_new_cstr(cstr, sizeof(cstr) - 1)
-static inline xrope *xr_new_cstr(const char * /* static, NULL-terminated */, size_t);
-static inline xrope *xr_new_imbed(const char * /* static */, size_t);
-static inline xrope *xr_new_volatile(const char * /* auto */, size_t);
+static inline xrope *xr_new_cstr(const char *, size_t);
+static inline xrope *xr_new_imbed(const char *, size_t);
+static inline xrope *xr_new_move(const char *, size_t);
+static inline xrope *xr_new_copy(const char *, size_t);
 
 static inline void XROPE_INCREF(xrope *);
 static inline void XROPE_DECREF(xrope *);
@@ -78,14 +88,14 @@ XROPE_DECREF(xrope *x) {
 }
 
 static inline xrope *
-xr_new_cstr(const char *str, size_t len)
+xr_new_cstr(const char *cstr, size_t len)
 {
   xr_chunk *c;
   xrope *x;
 
   c = (xr_chunk *)malloc(sizeof(xr_chunk));
   c->refcnt = 1;
-  c->str = (char *)str;
+  c->str = (char *)cstr;
   c->len = len;
   c->autofree = 0;
   c->zeroterm = 1;
@@ -126,7 +136,31 @@ xr_new_imbed(const char *str, size_t len)
 }
 
 static inline xrope *
-xr_new_volatile(const char *str, size_t len)
+xr_new_move(const char *cstr, size_t len)
+{
+  xr_chunk *c;
+  xrope *x;
+
+  c = (xr_chunk *)malloc(sizeof(xr_chunk));
+  c->refcnt = 1;
+  c->str = (char *)cstr;
+  c->len = len;
+  c->autofree = 1;
+  c->zeroterm = 1;
+
+  x = (xrope *)malloc(sizeof(xrope));
+  x->refcnt = 1;
+  x->left = NULL;
+  x->right = NULL;
+  x->weight = c->len;
+  x->offset = 0;
+  x->chunk = c;
+
+  return x;
+}
+
+static inline xrope *
+xr_new_copy(const char *str, size_t len)
 {
   char *buf;
   xr_chunk *c;
