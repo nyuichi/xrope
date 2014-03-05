@@ -12,14 +12,12 @@ Just include "xrope.h" anywhere you want to use xrope!
 typedef struct xrope xrope;
 
 /**
- * <p>
  * | name         | frees buffer? | end with NULL? | complexity | misc
  * | ----         | ----          | ----           | ----       | ---
  * | xr_new_cstr  | no            | yes            | O(1)       | xr_new(_lit)
  * | xr_new_imbed | no            | no             | O(1)       |
  * | xr_new_move  | yes           | yes            | O(1)       |
  * | xr_new_copy  | yes           | no             | O(n)       |
- * </p>
  */
 
 #define xr_new(cstr) xr_new_cstr(cstr, strlen(cstr))
