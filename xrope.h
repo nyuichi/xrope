@@ -8,6 +8,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 /* public APIs */
 
@@ -231,9 +232,8 @@ xr_cat(xrope *x, xrope *y)
 static inline struct xrope *
 xr_sub(xrope *x, size_t i, size_t j)
 {
-  if (x->weight < j) {          /* checked only once the first run */
-    return NULL;
-  }
+  assert(i <= j);
+  assert(j <= x->weight);
 
   if (i == 0 && x->weight == j) {
     XROPE_INCREF(x);
