@@ -236,6 +236,7 @@ xr_sub(xrope *x, size_t i, size_t j)
   }
 
   if (i == 0 && x->weight == j) {
+    XROPE_INCREF(x);
     return x;
   }
 
